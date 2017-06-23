@@ -4,13 +4,15 @@
 // 3. Paste this code into the JS console.
 // 4. Paste the resulting pastebuffer into another file.
 
+// Credits:
+// im_useful_to_society on r/duelyst
+
 function getCardsJSON() {
     console.log("-------------------------------")
     console.log("CARDS")
 
     var cards = GameDataManager.getInstance().cardsCollection.models
     var data = {
-        "version": "",
         "cards": {}
     }
 
@@ -123,7 +125,6 @@ function getCardsJSON() {
         console.log(card.name + " - " + card.category + " - " + card.id)
         console.log(cards[i])
         console.log(card)
-
     }
 
     console.log("-------------------------------")
