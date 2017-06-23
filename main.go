@@ -6,32 +6,35 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-)
-
-var (
-	cards map[int]Card
+	"github.com/willroberts/decklyst/card"
+	"github.com/willroberts/decklyst/deck"
 )
 
 func main() {
-	var err error
-	cards, err = loadCards()
-	if err != nil {
+	if err := card.LoadCards(); err != nil {
 		log.Fatal("error: failed to load cards:", err)
 	}
 
 	r := mux.NewRouter()
 	r.HandleFunc("/card/{id}", CardHandler)
+	r.HandleFunc("/deck/{deck}", DeckHandler)
+
+	log.Println("Serving HTTP on :8000")
 	if err := http.ListenAndServe(":8000", r); err != nil {
 		log.Fatal("error serving http:", err)
 	}
 }
 
 func CardHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	data := cards[toInt(vars["id"])].Bytes()
-
+	cardID := toInt(mux.Vars(r)["id"])
+	data := card.GetByID(cardID).Bytes()
 	w.Write(data)
-	w.Write([]byte("\n"))
+}
+
+func DeckHandler(w http.ResponseWriter, r *http.Request) {
+	encodedDeck := mux.Vars(r)["deck"]
+	deckOut := deck.DecodeDeck(encodedDeck)
+	w.Write([]byte(deckOut))
 }
 
 func toInt(s string) int {

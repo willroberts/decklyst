@@ -1,9 +1,13 @@
-package main
+package card
 
 import (
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
+)
+
+var (
+	allCards map[int]Card
 )
 
 type CardData struct {
@@ -45,10 +49,10 @@ func (c Card) Bytes() []byte {
 	return b
 }
 
-func loadCards() (map[int]Card, error) {
+func LoadCards() error {
 	b, err := ioutil.ReadFile("assets/cards/v1.86.0.json")
 	if err != nil {
-		return map[int]Card{}, err
+		return err
 	}
 	buf := bytes.NewBuffer(b)
 
@@ -56,8 +60,15 @@ func loadCards() (map[int]Card, error) {
 	data := CardData{}
 	err = decoder.Decode(&data)
 	if err != nil {
-		return map[int]Card{}, nil
+		return err
 	}
 
-	return data.Cards, nil
+	allCards = data.Cards
+	return nil
 }
+
+func GetByID(id int) Card {
+	return allCards[id]
+}
+
+func IDToInt() {}
