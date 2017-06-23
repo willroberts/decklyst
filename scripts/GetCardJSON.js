@@ -26,8 +26,6 @@ function getCardsJSON() {
 
         // Card
         card = {}
-        //card.animations = {}
-        //card.keywords = []
 
         // Basic
         card.id = attributes.id
@@ -56,14 +54,6 @@ function getCardsJSON() {
         card.faction = attributes.factionName
         card.factionId = attributes.factionId
         card.factionSlug = card.faction.split(" ")[0].toLowerCase()
-
-        // Keywords
-        /*var keywords = attributes.keywordDescriptions
-         if (keywords.length) {
-             for (var ii = 0; ii < keywords.length; ii++) {
-                 card.keywords[ii] = keywords[ii].name
-             }
-         }*/
 
         // Race
         card.race = attributes.raceName
@@ -117,14 +107,7 @@ function getCardsJSON() {
         var filename = pieces[pieces.length - 1]
         var slug = filename.split(".")[0]
         card.slug = slug
-        /*
-        var cardTypeAttack = attributes.isArtifact || attributes.isSpell ? "_active.gif" : "_attack.gif"
-        var cardTypeIdle = attributes.isArtifact || attributes.isSpell ? "_idle.png" : "_idle.gif"
 
-        // Card GIF
-        card.attackAnim = "icons/" + card.id + cardTypeAttack
-        card.idleAnim = "icons/" + card.id + cardTypeIdle
-        */
         // Save
         if (card["id"] < 1000000)
             data.cards[card["id"]] = card
