@@ -1,9 +1,16 @@
+// Instructions:
+// 1. Open play.duelyst.com in Chrome
+// 2. Log in
+// 3. Paste this code into the JS console.
+// 4. Paste the resulting pastebuffer into another file.
+
 function getCardsJSON() {
     console.log("-------------------------------")
     console.log("CARDS")
 
     var cards = GameDataManager.getInstance().cardsCollection.models
     var data = {
+        "version": "",
         "cards": {}
     }
 
