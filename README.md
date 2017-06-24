@@ -54,3 +54,9 @@ GET http://decklyst.xyz/deck/MTo1MDEsMzo1MTcsMjo1MzgsMzo1NDAsMzoxMDMwMiwyOjEwMzA
     }
 }
 ```
+
+## To Do
+
+1. Fix deploy to check for existing assets.
+2. Remove console.log() statements from GetCardJSON().
+3. GraphQL?
