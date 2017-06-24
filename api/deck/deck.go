@@ -12,13 +12,19 @@ import (
 type Deck struct {
 	Faction string
 	General string
-	Cards   map[string]int
+	Cards   []CardRepr
+}
+
+type CardRepr struct {
+	ID    int
+	Name  string
+	Count int
 }
 
 // DecodeDeck assumes the name has not been included in the deck (e.g. [FOO]).
 func DecodeDeck(d string) Deck {
 	deck := Deck{}
-	deck.Cards = make(map[string]int)
+	deck.Cards = make([]CardRepr, 0)
 
 	csv, err := base64.StdEncoding.DecodeString(d)
 	if err != nil {
@@ -36,7 +42,12 @@ func DecodeDeck(d string) Deck {
 			deck.General = card.Name
 			deck.Faction = card.Faction
 		} else {
-			deck.Cards[card.Name] = cardQty
+			r := CardRepr{
+				ID:    cardID,
+				Name:  card.Name,
+				Count: cardQty,
+			}
+			deck.Cards = append(deck.Cards, r)
 		}
 	}
 
