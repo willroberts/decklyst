@@ -70,5 +70,3 @@ func LoadCards() error {
 func GetByID(id int) Card {
 	return allCards[id]
 }
-
-func IDToInt() {}

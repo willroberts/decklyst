@@ -24,8 +24,8 @@ func DecodeDeck(d string) string {
 
 	for _, c := range strings.Split(string(deck), ",") {
 		cardParts := strings.Split(c, ":")
-		cardQty := toInt(cardParts[0])
-		cardID := toInt(cardParts[1])
+		cardQty := ToInt(cardParts[0])
+		cardID := ToInt(cardParts[1])
 		cardName := card.GetByID(cardID).Name
 		out = fmt.Sprintf("%s%dx %s\n", out, cardQty, cardName)
 	}
@@ -33,7 +33,7 @@ func DecodeDeck(d string) string {
 	return out
 }
 
-func toInt(s string) int {
+func ToInt(s string) int {
 	i, err := strconv.ParseInt(s, 10, 64)
 	if err != nil {
 		return 0
