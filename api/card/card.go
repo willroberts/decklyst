@@ -51,8 +51,8 @@ func (c Card) Bytes() []byte {
 	return b
 }
 
-func LoadCards() error {
-	b, err := ioutil.ReadFile("assets/cards/v1.86.0.json")
+func LoadCards(dataFile string) error {
+	b, err := ioutil.ReadFile(dataFile)
 	if err != nil {
 		return err
 	}

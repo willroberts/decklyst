@@ -13,15 +13,17 @@ import (
 
 var (
 	httpPort int
+	dataFile string
 )
 
 func init() {
 	flag.IntVar(&httpPort, "port", 8000, "bind to this port")
+	flag.StringVar(&dataFile, "data", "assets/cards/v1.86.0.json", "cards json file")
 	flag.Parse()
 }
 
 func main() {
-	if err := card.LoadCards(); err != nil {
+	if err := card.LoadCards(dataFile); err != nil {
 		log.Fatal("error: failed to load cards:", err)
 	}
 
