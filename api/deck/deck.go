@@ -10,9 +10,10 @@ import (
 )
 
 type Deck struct {
-	Faction string
-	General string
-	Cards   []CardRepr
+	Faction    string
+	General    string
+	SpiritCost int
+	Cards      []CardRepr
 }
 
 type CardRepr struct {
@@ -32,12 +33,14 @@ func DecodeDeck(d string) Deck {
 	}
 
 	fields := strings.Split(string(csv), ",")
+	spiritCost := 0
 	for _, c := range fields {
 		parts := strings.Split(c, ":")
 		cardQty := ToInt(parts[0])
 		cardID := ToInt(parts[1])
 
 		card := card.GetByID(cardID)
+		spiritCost += card.SpiritCost
 		if card.IsGeneral {
 			deck.General = card.Name
 			deck.Faction = card.Faction
@@ -51,6 +54,7 @@ func DecodeDeck(d string) Deck {
 		}
 	}
 
+	deck.SpiritCost = spiritCost
 	return deck
 }
 
