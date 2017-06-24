@@ -25,17 +25,19 @@ var (
 func init() {
 	flag.IntVar(&httpPort, "port", 8000, "bind to this port")
 	flag.StringVar(&dataFile, "data", "assets/cards/v1.86.0.json", "cards json file")
-	flag.StringVar(&logFile, "log", "decklyst.log", "where to write log output")
+	flag.StringVar(&logFile, "log", "", "where to write log output")
 	flag.Parse()
 }
 
 func main() {
-	f, err := os.OpenFile(logFile, os.O_RDWR|os.O_CREATE, 0755)
-	if err != nil {
-		log.Fatal("error: failed to open log file")
+	if logFile != "" {
+		f, err := os.OpenFile(logFile, os.O_RDWR|os.O_CREATE, 0755)
+		if err != nil {
+			log.Fatal("error: failed to open log file")
+		}
+		defer f.Close()
+		log.SetOutput(f)
 	}
-	defer f.Close()
-	log.SetOutput(f)
 
 	if err := card.LoadCards(dataFile); err != nil {
 		log.Fatal("error: failed to load cards:", err)
