@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/willroberts/decklyst/card"
+	"github.com/willroberts/decklyst/api/card"
 )
 
 func DecodeDeck(d string) string {

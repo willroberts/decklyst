@@ -6,8 +6,8 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/willroberts/decklyst/card"
-	"github.com/willroberts/decklyst/deck"
+	"github.com/willroberts/decklyst/api/card"
+	"github.com/willroberts/decklyst/api/deck"
 )
 
 func main() {
