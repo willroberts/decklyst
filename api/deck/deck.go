@@ -2,35 +2,53 @@ package deck
 
 import (
 	"encoding/base64"
-	"fmt"
+	"encoding/json"
 	"strconv"
 	"strings"
 
 	"github.com/willroberts/decklyst/api/card"
 )
 
-func DecodeDeck(d string) string {
-	//deckParts := strings.Split(d, "]")
-	//deckName := deckParts[0]
-	//deckEnc := deckParts[1]
-	deckEnc := d
-	deckName := "test"
-	out := fmt.Sprintf("%s\n", deckName)
+type Deck struct {
+	Faction string
+	General string
+	Cards   map[string]int
+}
 
-	deck, err := base64.StdEncoding.DecodeString(deckEnc)
+// DecodeDeck assumes the name has not been included in the deck (e.g. [FOO]).
+func DecodeDeck(d string) Deck {
+	deck := Deck{}
+	deck.Cards = make(map[string]int)
+
+	csv, err := base64.StdEncoding.DecodeString(d)
 	if err != nil {
-		return deckName
+		return deck
 	}
 
-	for _, c := range strings.Split(string(deck), ",") {
-		cardParts := strings.Split(c, ":")
-		cardQty := ToInt(cardParts[0])
-		cardID := ToInt(cardParts[1])
-		cardName := card.GetByID(cardID).Name
-		out = fmt.Sprintf("%s%dx %s\n", out, cardQty, cardName)
+	fields := strings.Split(string(csv), ",")
+	for _, c := range fields {
+		parts := strings.Split(c, ":")
+		cardQty := ToInt(parts[0])
+		cardID := ToInt(parts[1])
+
+		card := card.GetByID(cardID)
+		if card.IsGeneral {
+			deck.General = card.Name
+			deck.Faction = card.Faction
+		} else {
+			deck.Cards[card.Name] = cardQty
+		}
 	}
 
-	return out
+	return deck
+}
+
+func (d Deck) Bytes() []byte {
+	b, err := json.Marshal(d)
+	if err != nil {
+		return []byte{}
+	}
+	return b
 }
 
 func ToInt(s string) int {

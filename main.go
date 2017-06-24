@@ -35,12 +35,16 @@ func main() {
 
 func CardHandler(w http.ResponseWriter, r *http.Request) {
 	cardID := deck.ToInt(mux.Vars(r)["id"])
-	data := card.GetByID(cardID).Bytes()
-	w.Write(data)
+	resp := card.GetByID(cardID).Bytes()
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(resp)
 }
 
 func DeckHandler(w http.ResponseWriter, r *http.Request) {
 	encodedDeck := mux.Vars(r)["deck"]
-	deckOut := deck.DecodeDeck(encodedDeck)
-	w.Write([]byte(deckOut))
+	resp := deck.DecodeDeck(encodedDeck).Bytes()
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(resp)
 }

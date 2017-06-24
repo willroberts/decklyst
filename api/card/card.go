@@ -17,28 +17,30 @@ type CardData struct {
 type Card struct {
 	ID          int    `json:"id"`
 	Name        string `json:"name"`
+	FactionID   int    `json:"factionId"`
 	Faction     string `json:"faction"`
 	SetName     string `json:"setName"`
+	RarityID    int    `json:"rarityId"`
 	Rarity      string `json:"rarity"`
 	Mana        int    `json:"mana"`
 	Attack      int    `json:"attack"`
 	HP          int    `json:"hp"`
-	Type        string `json:"type"`           // General, Minion, Spell, etc.
+	Category    string `json:"category"` // unit, spell, etc.
+	Type        string `json:"type"`     // General, Minion, Golem, Spell, etc.
+	IsGeneral   bool   `json:"isGeneral"`
 	Race        string `json:"race,omitempty"` // E.g. Arcanyst
 	Description string `json:"description"`
 
+	// Useful for deckbuilding sites.
+	SearchableContent string `json:"searchableContent"`
+	Frame             string `json:"frame"`
+	PList             string `json:"plist"`
+	Sprite            string `json:"sprite"`
+
 	// Debatable utility.
-	//FactionID         int    `json:"factionId"`
-	//RarityID          int    `json:"rarityId"`
-	//Category          string `json:"category"` // unit, spell, etc.
-	//SearchableContent string `json:"searchableContent"`
-	//IsGeneral         bool   `json:"isGeneral"`
 	//IsHidden          bool   `json:"isHidden"`
-	//Frame             string `json:"frame"`
-	//PList             string `json:"plist"`
-	//Sprite            string `json:"sprite"`
+	//FactionSlug string `json:"factionSlug"`
 	//Slug              string `json:"slug"`
-	//FactionSlug       string `json:"factionSlug"`
 }
 
 func (c Card) Bytes() []byte {
@@ -56,10 +58,9 @@ func LoadCards() error {
 	}
 	buf := bytes.NewBuffer(b)
 
-	decoder := json.NewDecoder(buf)
 	data := CardData{}
-	err = decoder.Decode(&data)
-	if err != nil {
+	decoder := json.NewDecoder(buf)
+	if err := decoder.Decode(&data); err != nil {
 		return err
 	}
 
