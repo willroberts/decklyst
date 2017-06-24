@@ -1,14 +1,24 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/willroberts/decklyst/api/card"
 	"github.com/willroberts/decklyst/api/deck"
 )
+
+var (
+	httpPort int
+)
+
+func init() {
+	flag.IntVar(&httpPort, "port", 8000, "bind to this port")
+	flag.Parse()
+}
 
 func main() {
 	if err := card.LoadCards(); err != nil {
@@ -19,14 +29,12 @@ func main() {
 	r.HandleFunc("/card/{id}", CardHandler)
 	r.HandleFunc("/deck/{deck}", DeckHandler)
 
-	log.Println("Serving HTTP on :8000")
-	if err := http.ListenAndServe(":8000", r); err != nil {
-		log.Fatal("error serving http:", err)
-	}
+	log.Println("Serving HTTP on port", httpPort)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", httpPort), r))
 }
 
 func CardHandler(w http.ResponseWriter, r *http.Request) {
-	cardID := toInt(mux.Vars(r)["id"])
+	cardID := deck.ToInt(mux.Vars(r)["id"])
 	data := card.GetByID(cardID).Bytes()
 	w.Write(data)
 }
@@ -35,12 +43,4 @@ func DeckHandler(w http.ResponseWriter, r *http.Request) {
 	encodedDeck := mux.Vars(r)["deck"]
 	deckOut := deck.DecodeDeck(encodedDeck)
 	w.Write([]byte(deckOut))
-}
-
-func toInt(s string) int {
-	i, err := strconv.ParseInt(s, 10, 64)
-	if err != nil {
-		return 0
-	}
-	return int(i)
 }
