@@ -15,4 +15,5 @@ bin/
 .glide/
 
 # Custom
+deploy.sh
 *.log
