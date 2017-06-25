@@ -15,17 +15,18 @@ const (
 )
 
 type Deck struct {
-	Faction         string
-	General         string
-	SpiritCost      int
-	AverageManaCost float64
-	Cards           []CardRepr
+	Faction         string      `json:"faction"`
+	General         string      `json:"general"`
+	SpiritCost      int         `json:"spiritCost"`
+	AverageManaCost float64     `json:"averageManaCost"`
+	ManaCurve       map[int]int `json:"manaCurve"`
+	Cards           []CardRepr  `json:"cards"`
 }
 
 type CardRepr struct {
-	ID    int
-	Name  string
-	Count int
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	Count int    `json:"count"`
 }
 
 // DecodeDeck assumes the name has not been included in the deck (e.g. [FOO]).
@@ -40,6 +41,7 @@ func DecodeDeck(d string) Deck {
 
 	spiritCost := 0
 	totalManaCost := 0
+	curve := map[int]int{}
 
 	fields := strings.Split(string(csv), ",")
 	for _, c := range fields {
@@ -48,25 +50,39 @@ func DecodeDeck(d string) Deck {
 		cardID := ToInt(parts[1])
 		card := card.GetByID(cardID)
 
-		spiritCost += card.SpiritCost
-		totalManaCost += card.Mana
-
 		if card.IsGeneral {
 			deck.General = card.Name
 			deck.Faction = card.Faction
-		} else {
-			r := CardRepr{
-				ID:    cardID,
-				Name:  card.Name,
-				Count: cardQty,
+			continue
+		}
+
+		r := CardRepr{
+			ID:    cardID,
+			Name:  card.Name,
+			Count: cardQty,
+		}
+		deck.Cards = append(deck.Cards, r)
+
+		// Accumulate spirit cost, mana cost, and mana curve for deck.
+		spiritCost += card.SpiritCost
+		totalManaCost += card.Mana
+		found := false
+		for k, v := range curve {
+			if k == card.Mana {
+				found = true
+				curve[k] = v + cardQty
 			}
-			deck.Cards = append(deck.Cards, r)
+		}
+		if !found {
+			curve[card.Mana] = cardQty
 		}
 	}
 
 	deck.SpiritCost = spiritCost
 	avgManaCost := float64(totalManaCost) / manaDenominator
 	deck.AverageManaCost = math.Trunc(10*avgManaCost) / 10 // Retain one digit.
+	deck.ManaCurve = curve
+
 	return deck
 }
 
