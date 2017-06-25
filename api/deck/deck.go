@@ -65,7 +65,7 @@ func DecodeDeck(d string) Deck {
 
 		// Accumulate spirit cost, mana cost, and mana curve for deck.
 		spiritCost += card.SpiritCost
-		totalManaCost += card.Mana
+		totalManaCost += card.Mana * cardQty
 		found := false
 		for k, v := range curve {
 			if k == card.Mana {
