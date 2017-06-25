@@ -9,11 +9,16 @@ import (
 	"github.com/willroberts/decklyst/api/card"
 )
 
+const (
+	cardsPerDeck int = 39
+)
+
 type Deck struct {
-	Faction    string
-	General    string
-	SpiritCost int
-	Cards      []CardRepr
+	Faction    		string
+	General    		string
+	SpiritCost 		int
+	AverageManaCost float64
+	Cards      		[]CardRepr
 }
 
 type CardRepr struct {
@@ -32,8 +37,10 @@ func DecodeDeck(d string) Deck {
 		return deck
 	}
 
-	fields := strings.Split(string(csv), ",")
 	spiritCost := 0
+	totalManaCost := 0
+
+	fields := strings.Split(string(csv), ",")
 	for _, c := range fields {
 		parts := strings.Split(c, ":")
 		cardQty := ToInt(parts[0])
@@ -50,11 +57,13 @@ func DecodeDeck(d string) Deck {
 				Name:  card.Name,
 				Count: cardQty,
 			}
+			totalManaCost += card.Mana
 			deck.Cards = append(deck.Cards, r)
 		}
 	}
 
 	deck.SpiritCost = spiritCost
+	deck.AverageManaCost = float64(totalManaCost) / float64(cardsPerDeck)
 	return deck
 }
 

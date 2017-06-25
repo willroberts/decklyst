@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
+	"log"
 )
 
 var (
@@ -57,13 +58,17 @@ func LoadCards(dataFile string) error {
 	if err != nil {
 		return err
 	}
+	log.Println("b:", b)
 	buf := bytes.NewBuffer(b)
+	log.Println("buf:", buf)
 
 	data := CardData{}
 	decoder := json.NewDecoder(buf)
+	log.Println("decoder:", decoder)
 	if err := decoder.Decode(&data); err != nil {
 		return err
 	}
+	log.Println("data:", data)
 
 	allCards = data.Cards
 
