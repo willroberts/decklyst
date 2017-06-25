@@ -3,17 +3,23 @@ package deck
 import (
 	"encoding/base64"
 	"encoding/json"
+	"math"
 	"strconv"
 	"strings"
 
 	"github.com/willroberts/decklyst/api/card"
 )
 
+const (
+	manaDenominator float64 = 39.0
+)
+
 type Deck struct {
-	Faction    string
-	General    string
-	SpiritCost int
-	Cards      []CardRepr
+	Faction         string
+	General         string
+	SpiritCost      int
+	AverageManaCost float64
+	Cards           []CardRepr
 }
 
 type CardRepr struct {
@@ -32,15 +38,19 @@ func DecodeDeck(d string) Deck {
 		return deck
 	}
 
-	fields := strings.Split(string(csv), ",")
 	spiritCost := 0
+	totalManaCost := 0
+
+	fields := strings.Split(string(csv), ",")
 	for _, c := range fields {
 		parts := strings.Split(c, ":")
 		cardQty := ToInt(parts[0])
 		cardID := ToInt(parts[1])
-
 		card := card.GetByID(cardID)
+
 		spiritCost += card.SpiritCost
+		totalManaCost += card.Mana
+
 		if card.IsGeneral {
 			deck.General = card.Name
 			deck.Faction = card.Faction
@@ -55,6 +65,8 @@ func DecodeDeck(d string) Deck {
 	}
 
 	deck.SpiritCost = spiritCost
+	avgManaCost := float64(totalManaCost) / manaDenominator
+	deck.AverageManaCost = math.Trunc(10*avgManaCost) / 10 // Retain one digit.
 	return deck
 }
 
