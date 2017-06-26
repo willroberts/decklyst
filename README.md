@@ -30,33 +30,87 @@ GET http://decklyst.xyz/card/501
 ``` 
 
 ```
-GET http://decklyst.xyz/deck/MTo1MDEsMzo1MTcsMjo1MzgsMzo1NDAsMzoxMDMwMiwyOjEwMzAzLDM6MTAzMDUsMjoxMTA5NCwzOjExMDk3LDM6MjAxMzQsMzoyMDEzOSwyOjIwMTQ0LDI6MjAxNDcsMjoyMDIwNywzOjIwMjM3LDM6MjAyNjE=
+GET http://decklyst.xyz/deck/MTo0MDEsMzo0MDUsMzo0MDcsMzo0MTAsMzo0MTIsMzo0MTMsMzo0MTUsMzoxMDAxMiwzOjEwOTU5LDM6MTA5ODEsMzoxOTAzNywzOjIwMTEzLDM6MjAxMTYsMzoyMDE1Nw==
 
 {
-    "Faction": "Vanar Kindred",
-    "General": "Faie Bloodwing",
-    "Cards": {
-        "Aspect of the Fox": 2,
-        "Blue Conjurer": 2,
-        "Chromatic Cold": 3,
-        "Circulus": 3,
-        "Flash Freeze": 3,
-        "Frigid Corona": 3,
-        "Frostburn": 2,
-        "Grandmaster Embla": 2,
-        "Gravity Well": 2,
-        "Hearth-Sister": 3,
-        "Mana Deathgrip": 3,
-        "Manaforger": 3,
-        "Owlbeast Sage": 3,
-        "Prismatic Illusionist": 2,
-        "Trinity Wing": 3
-    }
+    "faction": "Magmar Aspects",
+    "general": "Vaath the Immortal",
+    "spiritCost": 2550,
+    "averageManaCost": 3.3,
+    "manaCurve": {
+        "1": 3,
+        "2": 12,
+        "3": 6,
+        "4": 9,
+        "5": 6,
+        "6": 3
+    },
+    "cards": [
+        {
+            "id": 405,
+            "name": "Makantor Warbeast",
+            "count": 3
+        },
+        {
+            "id": 407,
+            "name": "Elucidator",
+            "count": 3
+        },
+        {
+            "id": 410,
+            "name": "Primordial Gazer",
+            "count": 3
+        },
+        {
+            "id": 412,
+            "name": "Young Silithar",
+            "count": 3
+        },
+        {
+            "id": 413,
+            "name": "Veteran Silithar",
+            "count": 3
+        },
+        {
+            "id": 415,
+            "name": "Spirit Harvester",
+            "count": 3
+        },
+        {
+            "id": 10012,
+            "name": "Saberspine Tiger",
+            "count": 3
+        },
+        {
+            "id": 10959,
+            "name": "Dancing Blades",
+            "count": 3
+        },
+        {
+            "id": 10981,
+            "name": "Healing Mystic",
+            "count": 3
+        },
+        {
+            "id": 19037,
+            "name": "Primus Fist",
+            "count": 3
+        },
+        {
+            "id": 20113,
+            "name": "Diretide Frenzy",
+            "count": 3
+        },
+        {
+            "id": 20116,
+            "name": "Greater Fortitude",
+            "count": 3
+        },
+        {
+            "id": 20157,
+            "name": "Egg Morph",
+            "count": 3
+        }
+    ]
 }
 ```
-
-## To Do
-
-1. Fix deploy to check for existing assets.
-2. Remove console.log() statements from GetCardJSON().
-3. GraphQL?
