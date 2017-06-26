@@ -8,13 +8,8 @@
 // im_useful_to_society on r/duelyst
 
 function getCardsJSON() {
-    console.log("-------------------------------")
-    console.log("CARDS")
-
     var cards = GameDataManager.getInstance().cardsCollection.models
-    var data = {
-        "cards": {}
-    }
+    var data = {"cards": {}}
 
     for (i = 0; i < cards.length; i++) {
         var attributes = cards[i].attributes
@@ -102,13 +97,11 @@ function getCardsJSON() {
 
         // Assets
         var animations = attributes.card._private.baseAnimResource
-        console.log(animations)
         var animationId = animations["idle"]
         var resource = RSX[animationId]
         card.frame = resource.framePrefix
         card.plist = resource.plist
         card.sprite = resource.img
-        console.log(resource)
 
         // Slug
         var url = card.sprite
@@ -120,15 +113,7 @@ function getCardsJSON() {
         // Save
         if (card["id"] < 1000000)
             data.cards[card["id"]] = card
-
-        console.log("-------------------------------")
-        console.log(card.name + " - " + card.category + " - " + card.id)
-        console.log(cards[i])
-        console.log(card)
     }
-
-    console.log("-------------------------------")
-    console.log("TOTAL: " + Object.keys(data.cards).length);
 
     return data;
 }
