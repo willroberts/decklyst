@@ -13,18 +13,27 @@ import (
 	"github.com/willroberts/decklyst/api/deck"
 )
 
+const (
+	version string = "v1.87.1"
+)
+
 var (
+	// Defaults.
+	defaultPath string = fmt.Sprintf("assets/cards/%s.json", version)
+
+	// Variables.
 	httpPort int
 	dataFile string
 	logFile  string
 
+	// Metrics.
 	cardHits uint = 0
 	deckHits uint = 0
 )
 
 func init() {
 	flag.IntVar(&httpPort, "port", 8000, "bind to this port")
-	flag.StringVar(&dataFile, "data", "assets/cards/v1.86.0.json", "cards json file")
+	flag.StringVar(&dataFile, "data", defaultPath, "cards json file")
 	flag.StringVar(&logFile, "log", "", "where to write log output")
 	flag.Parse()
 }
