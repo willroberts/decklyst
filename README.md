@@ -1,6 +1,10 @@
 # decklyst
 
-Card and Deck API for Duelyst
+Card and Deck API for Duelyst.
+
+Uses a local JSON database of all cards in the game (as of version v1.87.1) to
+allow queries for cards by ID. Also decodes the game's internal deck code format
+to break down a deck into its component cards.
 
 ## Sample API Responses
 
